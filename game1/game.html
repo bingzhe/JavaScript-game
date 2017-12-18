@@ -25,6 +25,7 @@
             return img;
         };
 
+        //挡板
         var Paddle = function () {
             var image = imageFromPath("paddle.png");
 
@@ -54,6 +55,7 @@
             return o;
         };
 
+        //球
         var Ball = function () {
             var image = imageFromPath("ball.png");
 
@@ -84,6 +86,21 @@
                     o.y += o.speedY;
                 }
             }
+            return o;
+        };
+
+        //砖块
+        var Block = function () {
+            var image = imageFromPath("block.png");
+
+            var o = {
+                image: image,
+                x: 100,
+                y: 200,
+                w: 50,
+                h: 20,
+            };
+
             return o;
         };
 
