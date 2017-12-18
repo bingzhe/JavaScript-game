@@ -96,11 +96,25 @@
             var o = {
                 image: image,
                 x: 100,
-                y: 200,
+                y: 100,
                 w: 50,
                 h: 20,
+                alive: true,
             };
 
+            o.kill = function () {
+                o.alive = false;
+            };
+
+            o.collide = function (ball) {
+                if (ball.y + ball.image.height > o.y) {
+                    if (ball.x > o.x && ball.x < o.x + o.image.width) {
+                        return true;
+                    }
+                }
+                return false;
+            };
+            
             return o;
         };
 
@@ -157,6 +171,7 @@
             var game = GuaGame();
             var paddle = Paddle();
             var ball = Ball();
+            var block = Block();
 
 
             game.registerAction('a', function () {
@@ -181,6 +196,10 @@
                 //draw
                 game.drawImage(paddle);
                 game.drawImage(ball);
+
+                if (block.alive) {
+                    game.drawImage(block);
+                }
             };
 
         };
