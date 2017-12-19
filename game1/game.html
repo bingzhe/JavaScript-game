@@ -89,6 +89,15 @@
             return o;
         };
 
+        //判断相交
+        var rectIntersects = function (a, b) {
+            if (b.y > a.y && b.y < a.y + a.image.height) {
+                if (b.x > a.x && b.x < a.x + a.image.width) {
+                    return true;
+                }
+            }
+            return false;
+        };
         //砖块
         var Block = function () {
             var image = imageFromPath("block.png");
@@ -114,7 +123,7 @@
                 }
                 return false;
             };
-            
+
             return o;
         };
 
