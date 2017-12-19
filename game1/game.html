@@ -36,11 +36,24 @@
                 speed: 5,
             };
 
+            o.move = function (x) {
+                if (x < 0) {
+                    x = 0;
+                }
+                if (x > 400 - o.image.width) {
+                    x = 400 - o.image.width;
+                }
+                o.x = x
+            };
             o.moveLeft = function () {
-                o.x -= o.speed;
+                o.move(o.x -= o.speed);
             };
             o.moveRight = function () {
-                o.x += o.speed;
+                // o.x += o.speed;
+                // if (o.x > 400 - o.image.width) {
+                //     o.x = 400 - o.image.width;
+                // }
+                o.move(o.x += o.speed);
             };
             o.collide = function (ball) {
                 if (ball.y + ball.image.height > o.y) {
@@ -86,6 +99,9 @@
                     o.y += o.speedY;
                 }
             }
+            o.rebound = function () {
+                o.speedY *= -1;
+            }
             return o;
         };
 
@@ -116,12 +132,7 @@
             };
 
             o.collide = function (ball) {
-                if (ball.y + ball.image.height > o.y) {
-                    if (ball.x > o.x && ball.x < o.x + o.image.width) {
-                        return true;
-                    }
-                }
-                return false;
+                return o.alive && (rectIntersects(o, ball) || rectIntersects(ball, o));
             };
 
             return o;
@@ -180,8 +191,15 @@
             var game = GuaGame();
             var paddle = Paddle();
             var ball = Ball();
-            var block = Block();
 
+            var blocks = [];
+            for (var i = 0; i < 5; i++) {
+                var b = Block();
+                //x,y
+                b.x = i * 60;
+                b.y = 50;
+                blocks.push(b);
+            }
 
             game.registerAction('a', function () {
                 paddle.moveLeft();
@@ -200,15 +218,32 @@
                 if (paddle.collide(ball)) {
                     ball.speedY *= -1;
                 }
+
+                //ball and block相撞
+                for (var i = 0; i < blocks.length; i++) {
+                    var b = blocks[i];
+
+                    if (b.collide(ball)) {
+                        log("相撞");
+                        b.kill();
+                        //反弹
+                        ball.rebound();
+                    }
+                }
+
             };
             game.draw = function () {
                 //draw
                 game.drawImage(paddle);
                 game.drawImage(ball);
 
-                if (block.alive) {
-                    game.drawImage(block);
+                for (var i = 0; i < blocks.length; i++) {
+                    var b = blocks[i];
+                    if (b.alive) {
+                        game.drawImage(b);
+                    }
                 }
+
             };
 
         };
