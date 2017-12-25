@@ -1,4 +1,4 @@
-var GuaGame = function () {
+var GuaGame = function (fps) {
     var g = {
         actions: {},
         keydowns: {},
@@ -42,7 +42,7 @@ var GuaGame = function () {
         context.clearRect(0, 0, canvas.width, canvas.height);
         //draw
         g.draw();
-    }, 1000 / 60);
+    }, 1000 / fps);
 
     return g;
 };
