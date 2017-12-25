@@ -16,6 +16,7 @@
     <script src="ball.js"></script>
     <script src="block.js"></script>
     <script src="paddle.js"></script>
+    <script src="level.js"></script>
 
 </head>
 
@@ -24,19 +25,24 @@
 
     <script>
 
+        var loadLevel = function (n) {
+            n = n - 1;
+            var level = levels[n];
+            var blocks = [];
+            for (var i = 0; i < level.length; i++) {
+                var p = level[i];
+                var b = Block(p);
+
+                blocks.push(b);
+            }
+            return blocks;
+        }
         var __main = function () {
             var game = GuaGame(30);
             var paddle = Paddle();
             var ball = Ball();
 
-            var blocks = [];
-            for (var i = 0; i < 5; i++) {
-                var b = Block();
-                //x,y
-                b.x = i * 60;
-                b.y = 50;
-                blocks.push(b);
-            }
+            var blocks = loadLevel(1);
 
             game.registerAction('a', function () {
                 paddle.moveLeft();
