@@ -11,6 +11,11 @@
             border: 1px solid #000;
         }
     </style>
+    <script src="guagame.js"></script>
+    <script src="ball.js"></script>
+    <script src="block.js"></script>
+    <script src="paddle.js"></script>
+
 </head>
 
 <body>
@@ -25,86 +30,6 @@
             return img;
         };
 
-        //挡板
-        var Paddle = function () {
-            var image = imageFromPath("paddle.png");
-
-            var o = {
-                image: image,
-                x: 100,
-                y: 250,
-                speed: 5,
-            };
-
-            o.move = function (x) {
-                if (x < 0) {
-                    x = 0;
-                }
-                if (x > 400 - o.image.width) {
-                    x = 400 - o.image.width;
-                }
-                o.x = x
-            };
-            o.moveLeft = function () {
-                o.move(o.x -= o.speed);
-            };
-            o.moveRight = function () {
-                // o.x += o.speed;
-                // if (o.x > 400 - o.image.width) {
-                //     o.x = 400 - o.image.width;
-                // }
-                o.move(o.x += o.speed);
-            };
-            o.collide = function (ball) {
-                if (ball.y + ball.image.height > o.y) {
-                    if (ball.x > o.x && ball.x < o.x + o.image.width) {
-                        return true;
-                    }
-                }
-
-                return false;
-            };
-
-            return o;
-        };
-
-        //球
-        var Ball = function () {
-            var image = imageFromPath("ball.png");
-
-            var o = {
-                image: image,
-                x: 100,
-                y: 200,
-                speedX: 5,
-                speedY: 5,
-                fired: false
-            };
-
-            o.fire = function () {
-                o.fired = true;
-            }
-
-            o.move = function () {
-                if (o.fired) {
-                    if (o.x < 0 || o.x > 400) {
-                        o.speedX *= -1;
-                    }
-                    if (o.y < 0 || o.y > 300) {
-                        o.speedY *= -1;
-                    }
-
-                    //move
-                    o.x += o.speedX;
-                    o.y += o.speedY;
-                }
-            }
-            o.rebound = function () {
-                o.speedY *= -1;
-            }
-            return o;
-        };
-
         //判断相交
         var rectIntersects = function (a, b) {
             if (b.y > a.y && b.y < a.y + a.image.height) {
@@ -113,78 +38,6 @@
                 }
             }
             return false;
-        };
-        //砖块
-        var Block = function () {
-            var image = imageFromPath("block.png");
-
-            var o = {
-                image: image,
-                x: 100,
-                y: 100,
-                w: 50,
-                h: 20,
-                alive: true,
-            };
-
-            o.kill = function () {
-                o.alive = false;
-            };
-
-            o.collide = function (ball) {
-                return o.alive && (rectIntersects(o, ball) || rectIntersects(ball, o));
-            };
-
-            return o;
-        };
-
-        var GuaGame = function () {
-            var g = {
-                actions: {},
-                keydowns: {},
-            };
-
-            var canvas = document.querySelector("#id-canvas");
-            var context = canvas.getContext("2d");
-            g.canvas = canvas;
-            g.context = context;
-
-            //draw
-            g.drawImage = function (guaImage) {
-                g.context.drawImage(guaImage.image, guaImage.x, guaImage.y);
-            };
-            //events
-            window.addEventListener("keydown", function (event) {
-                g.keydowns[event.key] = true;
-            });
-            window.addEventListener("keyup", function (event) {
-                g.keydowns[event.key] = false;
-            });
-
-            g.registerAction = function (key, cb) {
-                g.actions[key] = cb;
-            };
-
-            //timer
-            setInterval(function () {
-                //events
-                var actions = Object.keys(g.actions);
-                for (var i = 0; i < actions.length; i++) {
-                    var key = actions[i];
-                    if (g.keydowns[key]) {
-                        //如果按键被按下，调用注册的action
-                        g.actions[key]();
-                    }
-                }
-                //update
-                g.update();
-                //clear
-                context.clearRect(0, 0, canvas.width, canvas.height);
-                //draw
-                g.draw();
-            }, 1000 / 60);
-
-            return g;
         };
 
         var __main = function () {
