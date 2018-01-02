@@ -42,7 +42,9 @@
             var paddle = Paddle();
             var ball = Ball();
 
-            var blocks = loadLevel(2);
+            var pause = true;
+
+            var blocks = loadLevel(1);
 
             game.registerAction('a', function () {
                 paddle.moveLeft();
@@ -58,13 +60,17 @@
                 var k = event.key;
 
                 if (k == 'p') {
-
+                    pause = !pause;
                 } else if ("12345".includes(Number(k))) {
                     blocks = loadLevel(Number(k));
                 }
             }, false);
 
             game.update = function () {
+                // if (pause) {
+                //     return
+                // }
+
                 ball.move();
 
                 //判断相撞

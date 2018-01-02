@@ -37,11 +37,11 @@ var GuaGame = function (fps) {
             }
         }
         //update
-        g.update();
+        g.update && g.update();
         //clear
         context.clearRect(0, 0, canvas.width, canvas.height);
         //draw
-        g.draw();
+        g.draw && g.draw();
     }, 1000 / fps);
 
     return g;
