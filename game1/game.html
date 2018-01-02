@@ -42,7 +42,7 @@
             var paddle = Paddle();
             var ball = Ball();
 
-            var blocks = loadLevel(1);
+            var blocks = loadLevel(2);
 
             game.registerAction('a', function () {
                 paddle.moveLeft();
@@ -53,6 +53,16 @@
             game.registerAction('f', function () {
                 ball.fire();
             });
+
+            window.addEventListener('keyup', function (event) {
+                var k = event.key;
+
+                if (k == 'p') {
+
+                } else if ("12345".includes(Number(k))) {
+                    blocks = loadLevel(Number(k));
+                }
+            }, false);
 
             game.update = function () {
                 ball.move();
