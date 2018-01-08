@@ -22,6 +22,8 @@
 
 <body>
     <canvas id="id-canvas" width="400" height="300"></canvas>
+    <hr>
+    <input type="week">
 
     <script>
 
@@ -37,12 +39,33 @@
             }
             return blocks;
         }
+        //debugger
+        var enableDebugMode = function (enable) {
+            if (!enable) {
+                return
+            }
+
+            window.addEventListener('keyup', function (event) {
+                var k = event.key;
+
+                if (k == 'p') {
+                    //暂停功能
+                    paused = !paused;
+                } else if ("12345".includes(Number(k))) {
+                    //临时加入载入关卡
+                    blocks = loadLevel(Number(k));
+                }
+            }, false);
+        };
+
         var __main = function () {
+            enableDebugMode(true);
+
             var game = GuaGame(30);
             var paddle = Paddle();
             var ball = Ball();
 
-            var pause = false;
+            var paused = false;
 
             var blocks = loadLevel(1);
 
@@ -60,14 +83,17 @@
                 var k = event.key;
 
                 if (k == 'p') {
-                    pause = !pause;
+                    //暂停功能
+                    paused = !paused;
                 } else if ("12345".includes(Number(k))) {
+                    //临时加入载入关卡
                     blocks = loadLevel(Number(k));
                 }
             }, false);
 
+
             game.update = function () {
-                if (pause) {
+                if (paused) {
                     return
                 }
 
