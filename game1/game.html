@@ -42,7 +42,7 @@
             var paddle = Paddle();
             var ball = Ball();
 
-            var pause = true;
+            var pause = false;
 
             var blocks = loadLevel(1);
 
@@ -67,9 +67,9 @@
             }, false);
 
             game.update = function () {
-                // if (pause) {
-                //     return
-                // }
+                if (pause) {
+                    return
+                }
 
                 ball.move();
 
