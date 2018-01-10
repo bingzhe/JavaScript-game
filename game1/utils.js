@@ -1,4 +1,9 @@
-var log = console.log.bind(console);
+// var log = console.log.bind(console);
+var e = v => document.querySelector(v);
+
+var log = function (v) {
+    e("#id-text-log").value += '\n' + v;
+}
 
 var imageFromPath = function (path) {
     var img = new Image();
