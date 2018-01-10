@@ -44,6 +44,8 @@ var enableDebugMode = function (enable) {
 var __main = function () {
     enableDebugMode(true);
 
+    var score = 0;
+
     var game = GuaGame(30);
     var paddle = Paddle();
     var ball = Ball();
@@ -96,6 +98,9 @@ var __main = function () {
                 b.kill();
                 //反弹
                 ball.rebound();
+
+                //更新分数
+                score += 10;
             }
         }
 
@@ -111,6 +116,9 @@ var __main = function () {
                 game.drawImage(b);
             }
         }
+
+        //draw labels
+        game.context.fillText("分数 " + score, 10, 290);
 
     };
 
