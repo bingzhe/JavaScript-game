@@ -20,3 +20,4 @@ var rectIntersects = function (a, b) {
     }
     return false;
 };
+
