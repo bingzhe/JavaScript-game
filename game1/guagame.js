@@ -1,4 +1,4 @@
-var GuaGame = function(fps, images) {
+var GuaGame = function(fps, images, runCallback) {
   //images 是 对象,里面是图片的名字
   var g = {
     actions: {},
@@ -55,33 +55,34 @@ var GuaGame = function(fps, images) {
   //载入所有图片
   var names = Object.keys(images);
   for (var i = 0; i < names.length; i++) {
-    var name = names[i];
+    let name = names[i];
     var path = images[name];
-    var img = new Image();
+    let img = new Image();
     log(img);
     img.src = path;
-    // img.onload = function() {
-    //   //存入g.images中
-    //   g.images[name] = img;
-    //   //所有图片都载入成功之后，调用run
-    //   loads.push(1);
-    //   if (loads.length === images.length) {
-    //     g.run();
-    //   }
-    // };
+    img.onload = function() {
+      //存入g.images中
+      g.images[name] = img;
+      //所有图片都载入成功之后，调用run
+      loads.push(1);
+      if (loads.length === names.length) {
+        g.run();
+      }
+    };
   }
 
   g.imageByName = function(name) {
     var img = g.images[name];
     var image = {
-    //   w: img.width,
-    //   h: img.height,
+      w: img.width,
+      h: img.height,
       image: img
     };
     return image;
   };
 
   g.run = function() {
+    runCallback(g);
     setTimeout(function() {
       runloop();
     }, 1000 / fps);

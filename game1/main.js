@@ -1,10 +1,10 @@
-var loadLevel = function(n) {
+var loadLevel = function(game, n) {
   n = n - 1;
   var level = levels[n];
   var blocks = [];
   for (var i = 0; i < level.length; i++) {
     var p = level[i];
-    var b = Block(p);
+    var b = Block(game, p);
 
     blocks.push(b);
   }
@@ -14,7 +14,7 @@ var loadLevel = function(n) {
 var blocks = [];
 
 //debugger
-var enableDebugMode = function(enable) {
+var enableDebugMode = function(game, enable) {
   if (!enable) {
     return;
   }
@@ -31,7 +31,7 @@ var enableDebugMode = function(enable) {
         window.paused = !window.paused;
       } else if ("12345".includes(Number(k))) {
         //临时加入载入关卡
-        blocks = loadLevel(Number(k));
+        blocks = loadLevel(game, Number(k));
       }
     },
     false
@@ -49,8 +49,6 @@ var enableDebugMode = function(enable) {
 };
 
 var __main = function() {
-  enableDebugMode(true);
-
   var score = 0;
 
   var images = {
@@ -59,82 +57,85 @@ var __main = function() {
     paddle: "paddle.png"
   };
 
-  var game = GuaGame(30, images);
-  var paddle = Paddle(game);
-  var ball = Ball(game);
+  var game = GuaGame(30, images, function(g) {
+    var paddle = Paddle(game);
+    var ball = Ball(game);
 
-  var paused = false;
+    var paused = false;
 
-  // var blocks = loadLevel(1);
+    var blocks = loadLevel(game, 1);
 
-  game.registerAction("a", function() {
-    paddle.moveLeft();
-  });
-  game.registerAction("d", function() {
-    paddle.moveRight();
-  });
-  game.registerAction("f", function() {
-    ball.fire();
-  });
+    game.registerAction("a", function() {
+      paddle.moveLeft();
+    });
+    game.registerAction("d", function() {
+      paddle.moveRight();
+    });
+    game.registerAction("f", function() {
+      ball.fire();
+    });
 
-  // window.addEventListener('keyup', function (event) {
-  //     var k = event.key;
+    // window.addEventListener('keyup', function (event) {
+    //     var k = event.key;
 
-  //     if (k == 'p') {
-  //         //暂停功能
-  //         paused = !paused;
-  //     } else if ("12345".includes(Number(k))) {
-  //         //临时加入载入关卡
-  //         blocks = loadLevel(Number(k));
-  //     }
-  // }, false);
+    //     if (k == 'p') {
+    //         //暂停功能
+    //         paused = !paused;
+    //     } else if ("12345".includes(Number(k))) {
+    //         //临时加入载入关卡
+    //         blocks = loadLevel(Number(k));
+    //     }
+    // }, false);
 
-  game.update = function() {
-    if (window.paused) {
-      return;
-    }
-
-    ball.move();
-
-    //判断相撞
-    if (paddle.collide(ball)) {
-      ball.speedY *= -1;
-    }
-
-    //ball and block相撞
-    for (var i = 0; i < blocks.length; i++) {
-      var b = blocks[i];
-
-      if (b.collide(ball)) {
-        log("相撞");
-        b.kill();
-        //反弹
-        ball.rebound();
-
-        //更新分数
-        score += 10;
+    game.update = function() {
+      if (window.paused) {
+        return;
       }
-    }
-  };
-  game.draw = function() {
-    //draw 背景
-    game.context.fillStyle = "#2ac8e4";
-    game.context.fillRect(0, 0, 400, 300);
 
-    //draw
-    game.drawImage(paddle);
-    game.drawImage(ball);
+      ball.move();
 
-    for (var i = 0; i < blocks.length; i++) {
-      var b = blocks[i];
-      if (b.alive) {
-        game.drawImage(b);
+      //判断相撞
+      if (paddle.collide(ball)) {
+        ball.speedY *= -1;
       }
-    }
 
-    //draw labels
-    game.context.fillText("分数 " + score, 10, 290);
-  };
+      //ball and block相撞
+      for (var i = 0; i < blocks.length; i++) {
+        var b = blocks[i];
+
+        if (b.collide(ball)) {
+          log("相撞");
+          b.kill();
+          //反弹
+          ball.rebound();
+
+          //更新分数
+          score += 10;
+        }
+      }
+    };
+    game.draw = function() {
+      //draw 背景
+      game.context.fillStyle = "#2ac8e4";
+      game.context.fillRect(0, 0, 400, 300);
+
+      //draw
+      game.drawImage(paddle);
+      game.drawImage(ball);
+
+      for (var i = 0; i < blocks.length; i++) {
+        var b = blocks[i];
+        if (b.alive) {
+          game.drawImage(b);
+        }
+      }
+
+      //draw labels
+      game.context.fillText("分数 " + score, 10, 290);
+    };
+  });
+
+  enableDebugMode(game, true);
 };
 
 __main();

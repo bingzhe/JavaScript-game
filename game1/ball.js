@@ -1,7 +1,7 @@
 //球
 var Ball = function(game) {
 
-  var o = game.imageByName("paddle");
+  var o = game.imageByName("ball");
   o.x = 100;
   o.y = 100;
   o.speedX = 5;
