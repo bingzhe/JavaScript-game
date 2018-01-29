@@ -114,6 +114,44 @@ var __main = function() {
         }
       }
     };
+    //mouse event
+    var enableDrag = false;
+    game.canvas.addEventListener(
+      "mousedown",
+      function(event) {
+        var x = event.offsetX;
+        var y = event.offsetY;
+
+        if (ball.hasPoint(x, y)) {
+          enableDrag = true;
+        }
+      },
+      false
+    );
+    //mouse event
+    game.canvas.addEventListener(
+      "mousemove",
+      function(event) {
+        var x = event.offsetX;
+        var y = event.offsetY;
+        //检查是否点中了ball
+        if (enableDrag) {
+          ball.x = x;
+          ball.y = y;
+        }
+      },
+      false
+    );
+    //mouse event
+    game.canvas.addEventListener(
+      "mouseup",
+      function(event) {
+        var x = event.offsetX;
+        var y = event.offsetY;
+        enableDrag = false;
+      },
+      false
+    );
     game.draw = function() {
       //draw 背景
       game.context.fillStyle = "#2ac8e4";
