@@ -153,6 +153,10 @@ var __main = function() {
       false
     );
     game.draw = function() {
+      if (gameover) {
+        //游戏结束
+        return;
+      }
       //draw 背景
       game.context.fillStyle = "#2ac8e4";
       game.context.fillRect(0, 0, 400, 300);
