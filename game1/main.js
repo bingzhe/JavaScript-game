@@ -49,8 +49,6 @@ var enableDebugMode = function(game, enable) {
 };
 
 var __main = function() {
-  var score = 0;
-
   var images = {
     ball: "ball.png",
     block: "block.png",
@@ -58,123 +56,11 @@ var __main = function() {
   };
 
   var game = GuaGame(30, images, function(g) {
-    var paddle = Paddle(game);
-    var ball = Ball(game);
+    // var paddle = Paddle(game);
+    // var ball = Ball(game);
 
-    var paused = false;
-
-    var blocks = loadLevel(game, 1);
-
-    game.registerAction("a", function() {
-      paddle.moveLeft();
-    });
-    game.registerAction("d", function() {
-      paddle.moveRight();
-    });
-    game.registerAction("f", function() {
-      ball.fire();
-    });
-
-    // window.addEventListener('keyup', function (event) {
-    //     var k = event.key;
-
-    //     if (k == 'p') {
-    //         //暂停功能
-    //         paused = !paused;
-    //     } else if ("12345".includes(Number(k))) {
-    //         //临时加入载入关卡
-    //         blocks = loadLevel(Number(k));
-    //     }
-    // }, false);
-
-    game.update = function() {
-      if (window.paused) {
-        return;
-      }
-
-      ball.move();
-
-      //判断相撞
-      if (paddle.collide(ball)) {
-        ball.speedY *= -1;
-      }
-
-      //ball and block相撞
-      for (var i = 0; i < blocks.length; i++) {
-        var b = blocks[i];
-
-        if (b.collide(ball)) {
-          log("相撞");
-          b.kill();
-          //反弹
-          ball.rebound();
-
-          //更新分数
-          score += 10;
-        }
-      }
-    };
-    //mouse event
-    var enableDrag = false;
-    game.canvas.addEventListener(
-      "mousedown",
-      function(event) {
-        var x = event.offsetX;
-        var y = event.offsetY;
-
-        if (ball.hasPoint(x, y)) {
-          enableDrag = true;
-        }
-      },
-      false
-    );
-    //mouse event
-    game.canvas.addEventListener(
-      "mousemove",
-      function(event) {
-        var x = event.offsetX;
-        var y = event.offsetY;
-        //检查是否点中了ball
-        if (enableDrag) {
-          ball.x = x;
-          ball.y = y;
-        }
-      },
-      false
-    );
-    //mouse event
-    game.canvas.addEventListener(
-      "mouseup",
-      function(event) {
-        var x = event.offsetX;
-        var y = event.offsetY;
-        enableDrag = false;
-      },
-      false
-    );
-    game.draw = function() {
-      if (gameover) {
-        //游戏结束
-        return;
-      }
-      //draw 背景
-      game.context.fillStyle = "#2ac8e4";
-      game.context.fillRect(0, 0, 400, 300);
-
-      //draw
-      game.drawImage(paddle);
-      game.drawImage(ball);
-
-      for (var i = 0; i < blocks.length; i++) {
-        var b = blocks[i];
-        if (b.alive) {
-          game.drawImage(b);
-        }
-      }
-
-      //draw labels
-      game.context.fillText("分数 " + score, 10, 290);
-    };
+    var s = Scene(g);
+    g.runWithScene(s);
   });
 
   enableDebugMode(game, true);
