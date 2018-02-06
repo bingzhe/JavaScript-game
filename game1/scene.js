@@ -21,7 +21,7 @@ var Scene = function(game) {
 
   s.draw = function() {
     // draw 背景
-    game.context.fillStyle = "#554";
+    game.context.fillStyle = "#9ac6de";
     game.context.fillRect(0, 0, 400, 300);
     // draw
     game.drawImage(paddle);
@@ -44,10 +44,15 @@ var Scene = function(game) {
     }
 
     ball.move();
-
     //判断相撞
     if (paddle.collide(ball)) {
       ball.speedY *= -1;
+    }
+
+    //判断游戏结束
+    if (ball.y > paddle.y) {
+      var end = SceneEnd(game);
+      game.replaceScene(end);
     }
 
     //ball and block相撞
