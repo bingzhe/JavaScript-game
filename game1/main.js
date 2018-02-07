@@ -59,7 +59,7 @@ var __main = function() {
     // var paddle = Paddle(game);
     // var ball = Ball(game);
 
-    var s = Scene(g);
+    var s = new SceneTitle(g);
     g.runWithScene(s);
   });
 
