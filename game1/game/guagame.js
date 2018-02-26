@@ -101,12 +101,6 @@ var GuaGame = function(fps, images, runCallback) {
     }, 1000 / fps);
   };
 
-  // g.run = function() {
-  //   runCallback(g);
-  //   setTimeout(function() {
-  //     runloop();
-  //   }, 1000 / fps);
-  // };
 
   //场景替换
   g.replaceScene = function(scene) {
@@ -115,26 +109,6 @@ var GuaGame = function(fps, images, runCallback) {
   g.__start = function(scene) {
     runCallback(g);
   };
-  //   runloop();
-
-  // //timer
-  // setInterval(function () {
-  //     //events
-  //     var actions = Object.keys(g.actions);
-  //     for (var i = 0; i < actions.length; i++) {
-  //         var key = actions[i];
-  //         if (g.keydowns[key]) {
-  //             //如果按键被按下，调用注册的action
-  //             g.actions[key]();
-  //         }
-  //     }
-  //     //update
-  //     g.update && g.update();
-  //     //clear
-  //     context.clearRect(0, 0, canvas.width, canvas.height);
-  //     //draw
-  //     g.draw && g.draw();
-  // }, 1000 / fps);
 
   return g;
 };
